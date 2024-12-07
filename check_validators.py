@@ -86,7 +86,6 @@ async def read_validators():
                         text = f"⚠️ Отключение валидатора <a href='https://explorer.decimalchain.com/validators/" \
                                f"{full_info['evmAddress']}'>{full_info['moniker']}</a>"
                     print(text)
-                    await bot.send_message(channel_explorer_validator, text, disable_web_page_preview=True)
                 await asyncio.sleep(0.5)
     await asyncio.sleep(0.5)
 
