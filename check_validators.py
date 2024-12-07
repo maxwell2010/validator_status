@@ -46,12 +46,42 @@ async def fetch_validators(session):
 async def read_validators(session):
     for moniker, drc20address, cosmos_address, emoji in validators_list:  # Убедитесь, что validators_list определен
         validator_info = await fetch_validators(session)
-        if validator_info:
-            option_info = await validator_info_cosmos(session, cosmos_address)
-            if option_info:
-                # Обработка информации о валидаторе
-                # (Здесь ваш существующий код по обработке информации)
-                pass  # Замените на вашу логику
+        if option_info:
+            moniker = validator_info['moniker']
+            delegator = validator_info['delegators']
+            fee = float(str(validator_info['fee'])) * 100
+            slots = validator_info['slots']
+            mins = int(validator_info['mins'])
+            if mins > 0:
+                mins = mins / 10**18
+            stake = int(validator_info['stake']) / 10**18
+            pictures = validator_info['identity']
+            # status = validator_info['status']
+            status = option_info['online']
+            status_text_ = "Online" if status else "Offline"
+            evmAddress = validator_info['evmAddress']
+            full_info = {'moniker': moniker,
+                         'status': status_text_,
+                         'fee': int(fee),
+                         'delegators': delegator,
+                         'slots': slots,
+                         'mins': int(mins),
+                         'stake': int(stake),
+                         'pictures': pictures,
+                         'cosmos_address': cosmos_address,
+                         'evmAddress': evmAddress,
+                         'emoji': emoji
+                         }
+            get_status = await read_status(full_info['moniker'], full_info['status'])
+            if get_status != full_info['status']:
+                text = f"✅ Включение валидатора <a href='https://explorer.decimalchain.com/validators/" \
+                       f"{full_info['evmAddress']}'>{full_info['moniker']}</a>"
+                if full_info['status'] == 'Offline':
+                    text = f"⚠️ Отключение валидатора <a href='https://explorer.decimalchain.com/validators/" \
+                           f"{full_info['evmAddress']}'>{full_info['moniker']}</a>"
+                print(text)
+            await asyncio.sleep(0.5)
+    await asyncio.sleep(0.5)
 
 async def start():
     async with aiohttp.ClientSession() as session:  # Создаем одну сессию для всех запросов
