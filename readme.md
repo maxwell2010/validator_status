@@ -1,3 +1,6 @@
+# Данный код был взят из проекта стикеров Candy https://t.me/addstickers/CandyPrice_by_CandyStickersPricebot которые отслеживают состояние валидаторов, а также некоторых монет сети DECIMAL
+
+
 # Чтение состояния валидаторов сети Decimal из списка активных
 
 
@@ -7,4 +10,4 @@
 4. Запускаем скрипт check_validators.py
 
 
-# Данный код был взят из проекта стикеров Candy https://t.me/addstickers/CandyPrice_by_CandyStickersPricebot которые отслеживают состояние валидаторов, а также некоторых монет сети DECIMAL
+
